@@ -1,6 +1,188 @@
-<ul>
-	<li></li>
-	<li></li>
-	<li></li>
-	<li></li>
-</ul>
+<?php 
+session_start();
+
+$sn = "localhost";
+$un = "root";
+$pass = "";
+$dbname = "account";
+//create a connection
+$con = new mysqli($sn,$un,$pass);
+$conn = new mysqli($sn,$un,$pass,$dbname);
+$tble ="`new_items`  ";
+//manage connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+echo " __";
+$query = "SELECT * FROM $tble";
+$result = mysqli_query($conn, $query);
+ $nameErr = $emailErr = $genderErr = $websiteErr = "";
+$name = $email = $gender = $comment = $website = ""; 
+?>
+
+<?php
+// define variables and set to empty values
+$nameErr = $emailErr = $genderErr = $websiteErr = "";
+$name = $email = $gender = $comment = $website = "";
+
+?>
+    
+<!DOCTYPE HTML>
+<html>
+<link rel="stylesheet" type="text/css" href="style.css">
+<div id="top"><div id="sidebar1">
+    
+      <p><img src="./img/wewe.png" align="left"></p>
+  
+      <p><img src="./img/wewe.png" align="right"></p>
+    </div>
+    <h1>! Fireworks New items page :!</h1>
+    <p><img src="./img/logo_brush.png" align="centre"></p>
+  </div>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+
+</head>
+ 
+<body>
+
+<title > China fireworks </title>
+ <div id="sidebar">
+ <div class="wrapper">
+   <div id="menubar">
+     <ul id="menulist">
+      <li class="menuitem"><a  href="in.php">Start_Management</a></li>
+	 <li class="menuitem"><a  href="2.5g.php">500 gram cakes </a></li>
+	 <li class="menuitem"><a  href="3.products.php">products </a></li>
+	 <li class="menuitem"><a  href="4.msa.php">multishots</a></li>
+	 <li class="menuitem"><a  href="5.new_i.php">new items</a></li>
+	 <li class="menuitem"><a  href="6.on_d.php">Duties</a></li>
+
+     </ul>
+    </div>
+	</div>
+	 </div>
+	  <div id="para1">
+	  <p><p>
+	  <form name="form1" action="" method="POST">
+ 
+ 
+   
+	
+<table>
+		<tr>
+		<td> Code:</td>
+		<td> <input type="text" name="t1" value="<?php echo $name;?>">
+  <span class="error">* <?php echo $nameErr;?></span>
+  <br><br>
+  </td>
+	</tr>
+		<tr>
+		<td> name:</td>
+		<td> <input type="text" name="t2" value="<?php echo $name;?>">
+  <span class="error">* <?php echo $nameErr;?></span>
+  <br><br>
+  </td>
+	</tr>
+	<tr>
+		<td>performance description: </td>
+		<td> <input type="text" name="t3" value="<?php echo $email;?>">
+  <span class="error">* <?php echo $emailErr;?></span>
+  <br><br></td>
+	</tr>
+	<tr>
+		<td>number shots: </td>
+		<td> <input type="text" name="t4" value="<?php echo $email;?>">
+  <span class="error">* <?php echo $emailErr;?></span>
+  <br><br></td>
+	</tr>
+	<tr>
+		<td>packaging: </td>
+		<td> <input type="text" name="t5" value="<?php echo $email;?>">
+  <span class="error">* <?php echo $emailErr;?></span>
+  <br><br></td>
+	</tr>
+	<tr>
+		<td><input type="submit" name="sub1" value="insert"></td>
+		<td><input type="submit" name="sub2" value="DELETE"></td>
+		<td><input type="submit" name="sub3" value="Update"></td>
+		<td><input type="submit" name="sub4" value="Refresh"></td>		
+		
+	</tr>
+	
+	</table>
+	<table border="1" >		
+			<tr>
+				<th> Item_ID </th>
+				<th> Item_code </th>
+				<th> Item_name </th>
+				<th> Item_description </th>
+				<th> date added </th>
+			</tr>
+		
+		<?php while($works = mysqli_fetch_array($result)):; ?>
+			<tr>
+				<td> <?php echo $works[0];?> </td>
+				<td> <?php echo $works[1];?> </td>
+				<td> <?php echo $works[2];?> </td>
+					<td> <?php echo $works[3];?> </td>
+				<td> <?php echo $works[6];?> </td>
+		
+					</tr>			
+		<?php endwhile;	?>
+		</table>
+ </p>
+
+<form id="modify" name="form1" action="" method="POST">
+
+
+	<P>___</p>
+	<?php
+	
+	if(isset($_POST["sub1"]))
+	{
+	// Attempt insert query execution
+	$sql = "INSERT INTO $tble (Item_Code,Item_Name,Performance_Description,Number_Shots,packaging) VALUES ('$_POST[t1]','$_POST[t2]','$_POST[t3]','$_POST[t4]','$_POST[t5]')";
+if(mysqli_query($conn, $sql)){
+    echo "Records inserted successfully.";
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
+}
+	}
+	
+	if(isset($_POST["sub2"]))
+	{
+	$sql = "DELETE FROM $tble where Item_Code='$_POST[t1]'";	
+	if(mysqli_query($conn, $sql)){
+		 echo "Record deleted successfully.";
+	}
+	}
+	
+	
+	if(isset($_POST["sub3"]))
+	{
+	$sql = "update  $tble set Item_Code='$_POST[t1]' where Item_Code='$_POST[t2]' ";	
+
+	if(mysqli_query($conn, $sql)){
+		 echo "Record updated successfully.";
+	}
+	}
+	
+	if(isset($_POST["sub4"]))
+	{
+	 		 echo "page refreshed successfully.";
+	
+	}
+	
+	?>
+	</p>
+	</form>
+	
+	</body>
+
+  <Footer>
+	 <p color='blue'>ladiesman324 Web Deisgn, Copyright &copy; 2017</p>
+	 </Footer>	
+	</html>
